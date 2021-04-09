@@ -66,7 +66,7 @@ class SignIn extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     const { username, password } = this.state;
-    console.log("loginnnnnnnnnnnnn");
+    console.log("login");
     const message = Login(username, password)
       .then( function(res) {
         console.log("Vaooooooooo",res.data)
