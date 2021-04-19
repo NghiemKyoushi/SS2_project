@@ -1,0 +1,33 @@
+.user {
+  background-color: rgb(247, 247, 247);
+  width: calc(100% - 250px);
+  left: 250px;
+  margin-top: 61px;
+  padding: 20px 20px;
+  height: 100%;
+  position: absolute;
+
+}
+
+.user-table {
+  margin-top: 30px;
+}
+
+.user button {
+  padding-left: 0px;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.right-most {
+  justify-content: flex-end;
+}
+
+.green-color {
+  color: #199b2e !important;
+}

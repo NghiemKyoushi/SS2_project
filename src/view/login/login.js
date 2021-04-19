@@ -18,8 +18,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import {Link } from "react-router-dom";
 //import function
-import {setCookie, getCookie} from '../../utils/fetchData'
-import { Login } from "../../utils/fetchData";
+import {setCookie, getCookie} from '../../utils/utils'
+import { Login } from "../../utils/utils";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">

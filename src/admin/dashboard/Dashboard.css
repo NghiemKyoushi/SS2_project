@@ -1,0 +1,43 @@
+.dashboard {
+  background-color: rgb(247, 247, 247);
+  width: calc(100% - 250px);
+  margin-left: 250px;
+  margin-top: 61px;
+  padding: 20px 20px;
+  height: calc(100vh - 61px);
+}
+
+.brief-count {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.static-card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 40px;
+  padding: 10px 10px;
+  border: 2px solid #22af46;
+  border-radius: 20px;
+  margin-top: 30px;
+  background-color: white;
+}
+
+.count-title {
+  font-size: 20px;
+  text-transform: capitalize;
+  color: #272727;
+  width: 100%;
+  text-align: center;
+  border-bottom: 2px solid #22af46;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.count-value {
+  font-weight: bold;
+  font-size: 30px;
+  color: #22af46;
+  margin-bottom: 0;
+}

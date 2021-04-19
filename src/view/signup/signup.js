@@ -14,7 +14,7 @@ import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 //fetch data
 
-import {Register} from '../../utils/fetchData/fetchData'
+import { Register } from '../../utils/utils/'
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -49,9 +49,9 @@ const styles = (theme) => ({
 
 class SignUp extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       name: "",
       username: "",
       email: "",
@@ -66,21 +66,21 @@ class SignUp extends React.Component {
       [e.target.name]: e.target.value,
     });
   }
-  onSubmit(e){
+  onSubmit(e) {
     e.preventDefault();
     console.log("suppppppppp");
-    const message = Register(this.state).then(res=>
+    const message = Register(this.state).then(res =>
       console.log(res.data)
-      )
-      if(message.data.message){
-        alert("register successfully, come to login")
-      }else{
-        alert("Register false")
-      }
-      // {success: true, message: "User registered successfully"}
+    )
+    if (message.data.message) {
+      alert("register successfully, come to login")
+    } else {
+      alert("Register false")
+    }
+    // {success: true, message: "User registered successfully"}
   }
 
-  render(){
+  render() {
     const { classes } = this.props;
     return (
       <Container component="main" maxWidth="xs">
@@ -103,11 +103,11 @@ class SignUp extends React.Component {
                   required
                   fullWidth
                   id="username"
-                  type= "text"
-  
+                  type="text"
+
                   label="Username"
                   autoFocus
-                  onChange= {this.onChange}
+                  onChange={this.onChange}
 
                 />
               </Grid>
@@ -120,7 +120,7 @@ class SignUp extends React.Component {
                   id="Name"
                   label="Name"
                   name="name"
-                  type= "text"
+                  type="text"
                   autoComplete="name"
                   onChange={this.onChange}
                 />
@@ -134,9 +134,9 @@ class SignUp extends React.Component {
                   id="email"
                   label="Email Address"
                   name="email"
-                  type= "email"
+                  type="email"
                   autoComplete="email"
-                  onChange= {this.onChange}
+                  onChange={this.onChange}
 
                 />
               </Grid>
@@ -151,7 +151,7 @@ class SignUp extends React.Component {
                   name="imageUrl"
                   type="text"
                   autoComplete="imageUrl"
-                  onChange= {this.onChange}
+                  onChange={this.onChange}
 
                 />
               </Grid>
@@ -196,7 +196,7 @@ class SignUp extends React.Component {
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  onChange= {this.onChange}
+                  onChange={this.onChange}
 
                 />
               </Grid>
@@ -213,7 +213,7 @@ class SignUp extends React.Component {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick= {this.onSubmit}
+              onClick={this.onSubmit}
             >
               Sign Up
             </Button>
@@ -232,7 +232,7 @@ class SignUp extends React.Component {
       </Container>
     );
   }
- 
+
 }
 
-export default withStyles(styles) (SignUp);
+export default withStyles(styles)(SignUp);

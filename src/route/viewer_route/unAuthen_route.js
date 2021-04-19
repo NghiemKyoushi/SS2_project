@@ -1,27 +1,27 @@
 import React from 'react';
-import {  withRouter,Route } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 
 
-class UnAuthenRoute extends React.Component{
+class UnAuthenRoute extends React.Component {
 
-  componentDidMount(){
+  componentDidMount() {
     console.log("unauthen")
   }
-  render(){
-    const {isLogin, path,exact,children} = this.props;
+  render() {
+    const { isLogin, path, exact, children } = this.props;
     console.log("isLogin: ", isLogin)
-    if(isLogin){
+    if (isLogin) {
       console.log("goback")
       this.props.history.goBack();
       return null;
-    }else{
+    } else {
       console.log("not goback")
-      return  (
+      return (
         <Route
-        {...this.props}
-        exact ={exact}
-        to ={path}>
-         {children}
+          {...this.props}
+          exact={exact}
+          to={path}>
+          {children}
         </Route>
       );
     }
