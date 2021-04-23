@@ -1,0 +1,10 @@
+.cardHover{
+  /* display: none; */
+  opacity: 0.01;
+  width: 165px;
+  height: 235px;
+  margin-left: -65px;
+}
+.cardHover:hover {
+  opacity: 1;
+}

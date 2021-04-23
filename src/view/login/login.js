@@ -16,16 +16,14 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 //import function
-import {setCookie, getCookie} from '../../utils/fetchData'
+import { setCookie, getCookie } from "../../utils/fetchData";
 import { Login } from "../../utils/fetchData";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      'Hanu_shoes © '
-      
-      {new Date().getFullYear()}
+      'Hanu_shoes © '{new Date().getFullYear()}
     </Typography>
   );
 }
@@ -57,47 +55,39 @@ class SignIn extends React.Component {
     this.state = {
       username: "",
       password: "",
-      fetchedData: false
+      fetchedData: false,
+      mess: ""
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
-  onSubmit(e) {
+ async onSubmit(e) {
     e.preventDefault();
     const { username, password } = this.state;
     console.log("login");
-    const message = Login(username, password)
-      .then( function(res) {
-        console.log("Vaooooooooo",res.data)
-        if(res.data.message === "login successfully"){
-          // setCookie("username", res.data.config.username, 100);
-          // setCookie("username", res.data.username, 100);
-
-          // this.props.setStateLogin(true, () => {
-          //   this.props.history.push("/");
-          // })
-          // this.setState({
-          //   fetchedData: true
-          // })
-          
-        }else {
-          alert("login false")
-        }
-      })
-      if(getCookie("login")){
-        const login = getCookie('login');
+    const message = await Login(username, password).then(function (res) {
+      console.log("Vaooooooooo", res.data);
+      if (res.data.message === "login successfully") {
+        if (getCookie("login") !== "") {
+          const login = getCookie("login");
           const decode = jwt_decode(login);
-          console.log("decode", decode)
-      }
-     
-      // if(this.state.fetchedData){
-      //    this.props.setStateLogin(true, () => {
-      //       this.props.history.push("/");
-      //    })
-      // }
-  }
+          console.log("decode", decode);
 
+       
+          setCookie("username", decode.uname, 100);
+          setCookie("userID", decode.sub,100);
+        }
+      } else {
+        alert("Username Or password is not correct");
+      }
+    });
+    if (getCookie("userID")) {
+      this.props.setStateLogin(true, () => {
+        this.props.history.push("/");
+      });
+    }
+  }
 
   onChange(e) {
     this.setState({
@@ -113,9 +103,10 @@ class SignIn extends React.Component {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
-          <Link to='/'><Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Link to="/">
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
           </Link>
           <Typography component="h1" variant="h5">
             Sign in
@@ -181,5 +172,4 @@ class SignIn extends React.Component {
   }
 }
 
-
-export default withStyles(useStyles) (withRouter(SignIn));
+export default withStyles(useStyles)(withRouter(SignIn));

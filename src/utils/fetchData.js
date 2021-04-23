@@ -1,4 +1,6 @@
 import axios from 'axios';
+
+
 //create cookies to save user when they login
 export function getCookie(cname) {
     var name = cname + "=";
