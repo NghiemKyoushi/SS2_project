@@ -140,3 +140,13 @@ export async function deleteUser(id) {
 }
 
 
+export async function getOrders() {
+  const { data } = await axios.get('http://localhost:3030/order');
+  return data;
+}
+
+export async function deleteOrder(id) {
+  const { data } = await axios.delete(`http://localhost:3030/order/${id}`);
+  return data;
+}
+

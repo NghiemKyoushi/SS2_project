@@ -12,7 +12,7 @@ import Sidebar from './admin/sidebar/Sidebar'
 import Dashboard from './admin/dashboard/Dashboard'
 import User from './admin/user/User'
 import Product from './admin/product/Product'
-
+import Order from './admin/order/Order'
 
 // 
 import jwt_decode from "jwt-decode";
@@ -129,6 +129,11 @@ class Hanu_Shoes extends React.Component {
               <Navbar />
               <Sidebar admin={admin} />
               <Product />
+            </ProtectedRouteAdmin>
+            <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/order'>
+              <Navbar />
+              <Sidebar admin={admin} />
+              <Order />
             </ProtectedRouteAdmin>
           </Switch>
         </Router>

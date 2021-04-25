@@ -26,11 +26,8 @@ const menus = [
         title: "Products",
         icon: <AllInboxOutlinedIcon />,
         link: "/admin/product"
-    }, {
-        title: "Cart",
-        icon: <ShoppingCartIcon />,
-        link: "/admin/cart"
-    }, {
+    },
+    {
         title: "Order",
         icon: <AssignmentTurnedInIcon />,
         link: "/admin/order"

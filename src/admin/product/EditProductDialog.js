@@ -78,7 +78,7 @@ class EditProductDialog extends Component {
                         </DialogContentText>
                         <input defaultValue={colors[i] ? colors[i].color : ""} className="color" name="catalog_name" type="text" onChange={this.handleChangeInput} style={{ marginBottom: "5px" }} />
                     </div>
-                    <div className="flex-center" style={{marginBottom: "0px"}}>
+                    <div className="flex-center" style={{ marginBottom: "0px" }}>
                         <DialogContentText>
                             Image
                         </DialogContentText>

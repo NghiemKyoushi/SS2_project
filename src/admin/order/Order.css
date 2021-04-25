@@ -1,0 +1,16 @@
+.cart {
+  background-color: rgb(247, 247, 247);
+  width: calc(100% - 250px);
+  left: 250px;
+  margin-top: 61px;
+  padding: 20px 20px;
+  height: 100%;
+  position: absolute;
+}
+
+.product-box {
+  border: 1px solid rgb(70, 70, 70);
+  border-radius: 10px;
+  padding: 8px;
+  margin-bottom: 5px;
+}
