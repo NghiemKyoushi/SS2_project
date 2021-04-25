@@ -1,13 +1,13 @@
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.css';
-
+import "bootstrap/dist/css/bootstrap.css";
+import '../header/header.css'
 // import 'bootstrap/dist/css/bootstrap.min.css';
 class Navigation extends React.Component {
   render() {
     return (
       <>
-        <nav
-          className="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block"
+        <nav 
+          className="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block "
           id="templatemo_nav_top"
         >
           <div className="container text-light">
@@ -18,7 +18,7 @@ class Navigation extends React.Component {
                   className="navbar-sm-brand text-light text-decoration-none"
                   href="mailto:info@company.com"
                 >
-                  info@company.com
+                  hanu_shoes@s.hanu.edu.vn
                 </a>
                 <i className="fa fa-phone mx-2" />
                 <a
@@ -29,11 +29,10 @@ class Navigation extends React.Component {
                 </a>
               </div>
               <div>
-            
-              <i class="fab fa-facebook-square"></i>
-              {/* <i class="fab fa-facebook-messenger"></i> */}
+                <i class="fab fa-facebook-square"></i>
+                {/* <i class="fab fa-facebook-messenger"></i> */}
 
-<a
+                <a
                   className="text-light"
                   href="https://www.instagram.com/"
                   target="_blank"

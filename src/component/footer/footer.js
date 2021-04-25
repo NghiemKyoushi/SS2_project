@@ -8,12 +8,12 @@ class Footer extends React.Component {
           <div className="row">
             <div className="col-md-4 pt-5">
               <h2 className="h2 text-success border-bottom pb-3 border-light logo">
-                Zay Shop
+                Hanu_Shoes
               </h2>
               <ul className="list-unstyled text-light footer-link-list">
                 <li>
                   <i className="fas fa-map-marker-alt fa-fw" />
-                  123 Consectetur at ligula 10660
+                  km9, Thanh Xuan, Ha Dong, Ha Noi
                 </li>
                 <li>
                   <i className="fa fa-phone fa-fw" />
@@ -26,7 +26,7 @@ class Footer extends React.Component {
                   <a
                     className="text-decoration-none"
                   >
-                    info@company.com
+                  hanu_shoes@s.hanu.edu.vn
                   </a>
                 </li>
               </ul>
@@ -51,26 +51,7 @@ class Footer extends React.Component {
                     Men's Shoes
                   </a>
                 </li>
-                <li>
-                  <a className="text-decoration-none" >
-                    Women's Shoes
-                  </a>
-                </li>
-                <li>
-                  <a className="text-decoration-none" >
-                    Popular Dress
-                  </a>
-                </li>
-                <li>
-                  <a className="text-decoration-none" >
-                    Gym Accessories
-                  </a>
-                </li>
-                <li>
-                  <a className="text-decoration-none" >
-                    Sport Shoes
-                  </a>
-                </li>
+               
               </ul>
             </div>
             <div className="col-md-4 pt-5">
@@ -93,16 +74,7 @@ class Footer extends React.Component {
                     Shop Locations
                   </a>
                 </li>
-                <li>
-                  <a className="text-decoration-none" >
-                    FAQs
-                  </a>
-                </li>
-                <li>
-                  <a className="text-decoration-none" >
-                    Contact
-                  </a>
-                </li>
+            
               </ul>
             </div>
           </div>
@@ -169,12 +141,11 @@ class Footer extends React.Component {
             <div className="row pt-2">
               <div className="col-12">
                 <p className="text-left text-light">
-                  Copyright © 2021 Company Name | Designed by{" "}
+                 Hanu_Shoes © SS2_2021 Hanoi University
                   <a
                     rel="sponsored"
                     target="_blank"
                   >
-                    TemplateMo
                   </a>
                 </p>
               </div>

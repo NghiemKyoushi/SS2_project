@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from "./view/homepage/hompage";
+//Route
 import UnAuthenRoute from './route/viewer_route/unAuthen_route';
 import ProtectedRouteAdmin from './route/admin-route/ProtectedRouteAdmin';
 import Login from './admin/login/Login';
@@ -16,10 +17,15 @@ import Order from './admin/order/Order'
 
 // 
 import jwt_decode from "jwt-decode";
-
-
-
+import ProtectedRoute from './route/user_route/ProtectedRoute';
+//__________________________
 import SignIn from './view/login/login';
+import ShopPage from './view/shopPage/shopPage';
+import ProductDetails from './view/productDetails/productDetails';
+import Content from './component/content/content';
+import Slide from './component/slide/slide';
+
+import Cart from './view/cart/cart';
 class Hanu_Shoes extends React.Component {
   constructor(props) {
     super(props);
@@ -94,8 +100,28 @@ class Hanu_Shoes extends React.Component {
         <Router>
           <Switch>
             <Route exact path="/">
-              <HomePage />
+              <HomePage isLogin={isLogin}>
+                <Slide />
+                <Content />
+              </HomePage>
             </Route>
+            <Route exact path='/product'>
+              <HomePage isLogin={isLogin}>
+                <ShopPage isLogin={isLogin} />
+              </HomePage>
+            </Route>
+
+            <Route exact path='/cart'>
+              <HomePage isLogin={isLogin}>
+                <Cart />
+              </HomePage>
+            </Route>
+            <UnAuthenRoute exact path='/product/:id'>
+              <HomePage isLogin={isLogin} >
+                <ProductDetails />
+              </HomePage>
+            </UnAuthenRoute>
+
             <UnAuthenRoute exact={true} isLogin={isLogin} path='/login'>
               <SignIn saveAuthentication={this.saveAuthentication} setStateLogin={this.setStateLogin} />
             </UnAuthenRoute>

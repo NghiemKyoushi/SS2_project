@@ -1,16 +1,17 @@
 import React from "react";
 
-import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
+import { getCookie, deleteCookie } from "../../utils/fetchData";
+import './header.css'
 class Header extends React.Component {
   render() {
+    const { isLogin } = this.props;
     return (
       <>
-        <nav className="navbar navbar-expand-lg navbar-light shadow ">
+        <nav id ="header" className="navbar navbar-expand-lg navbar-light shadow  ">
           <div className="container d-flex justify-content-between align-items-center">
-            <a
-              className="navbar-brand text-success logo align-self-center h1"
-            >
+            <a className="navbar-brand text-success logo align-self-center h1">
               <h3>Hanu_Shoes</h3>
             </a>
             <button
@@ -31,25 +32,23 @@ class Header extends React.Component {
               <div className="flex-fill">
                 <ul className="nav navbar-nav d-flex justify-content-center mx-lg-auto">
                   <li className="nav-item">
-                    <a className="nav-link "  >
+                    <Link to="/" className="nav-link ">
                       <h5>Home</h5>
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item ml-60 ">
-                    <a className="nav-link "  >
-                    <h5>About</h5>
-
+                    <a className="nav-link ">
+                      <h5>About</h5>
                     </a>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/product" className="nav-link">
+                      <h5>Shop</h5>
+                    </Link>
                   </li>
                   <li className="nav-item">
                     <a className="nav-link">
-                    <h5>Shop</h5>
-
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" >
-                    <h5>Contact</h5>
+                      <h5>Contact</h5>
                     </a>
                   </li>
                 </ul>
@@ -91,8 +90,23 @@ class Header extends React.Component {
                     +99
                   </span>
                 </a> */}
-                <Link to = '/login'>Login</Link>
-                <Link to= '/signup' className ="ml-4">Register</Link>
+
+                {isLogin ? (
+                  <button style={{border: "none"}} onClick= { ()=>{ 
+                   deleteCookie("username");
+                   deleteCookie("userID");
+                   window.location.reload();
+                  }} >
+                  <i class="fas fa-sign-out-alt"></i>
+                  </button>
+                ) : (
+                  <>
+                    <Link className="loginButton"  to="/login">Login</Link>
+                    <Link className="loginButton ml-4" to="/signup" >
+                      Register
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
