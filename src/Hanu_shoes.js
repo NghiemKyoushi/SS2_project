@@ -7,6 +7,8 @@ import UnAuthenRoute from './route/viewer_route/unAuthen_route';
 import ProtectedRouteAdmin from './route/admin-route/ProtectedRouteAdmin';
 import Login from './admin/login/Login';
 import { getCookie } from './utils/utils'
+import { findCart } from './utils/fetchDataProduct'
+
 // admin
 import Navbar from './admin/navbar/Navbar';
 import Sidebar from './admin/sidebar/Sidebar'
@@ -18,13 +20,13 @@ import Order from './admin/order/Order'
 // 
 import jwt_decode from "jwt-decode";
 import ProtectedRoute from './route/user_route/ProtectedRoute';
+import NormalRoute from './route/viewer_route/NormalRoute'
 //__________________________
 import SignIn from './view/login/login';
 import ShopPage from './view/shopPage/shopPage';
 import ProductDetails from './view/productDetails/productDetails';
 import Content from './component/content/content';
 import Slide from './component/slide/slide';
-
 import Cart from './view/cart/cart';
 class Hanu_Shoes extends React.Component {
   constructor(props) {
@@ -36,13 +38,15 @@ class Hanu_Shoes extends React.Component {
       admin: {},
       isLogin: false,
       isAdminLogin: false,
-      completed: false
+      completed: false,
+      cartCount: null
     };
     this.saveAuthentication = this.saveAuthentication.bind(this);
     this.setStateLogin = this.setStateLogin.bind(this);
     this.setStateAdminLogin = this.setStateAdminLogin.bind(this);
     this.setStateAdmin = this.setStateAdmin.bind(this);
-
+    this.reloadCart = this.reloadCart.bind(this);
+    this.checkStillLogin = this.checkStillLogin.bind(this);
   }
   //authentication
 
@@ -61,10 +65,18 @@ class Hanu_Shoes extends React.Component {
     })
   }
 
+  async reloadCart() {
+    if (getCookie('login')) {
+      const { sub } = jwt_decode(getCookie('login'));
+      const cart = await findCart(sub);
+      this.setState({
+        cartCount: cart.products.length
+      })
+    }
+  }
 
-  componentDidMount() {
+  async componentDidMount() {
     const cookie = getCookie('login');
-
     if (cookie) {
       const token = jwt_decode(cookie);
       console.log("authhhh", token.auth)
@@ -76,6 +88,8 @@ class Hanu_Shoes extends React.Component {
         this.setStateLogin({ uname: token.uname, id: token.sub })
       }
     }
+
+    await this.reloadCart();
   }
 
   setStateAdminLogin(data, callback) {
@@ -84,8 +98,6 @@ class Hanu_Shoes extends React.Component {
     }, callback)
   }
 
-
-
   //save data token and Bearer
   saveAuthentication(Authentication, user_inform) {
     this.setState({
@@ -93,35 +105,43 @@ class Hanu_Shoes extends React.Component {
       user: user_inform,
     });
   }
+
+  checkStillLogin() {
+    if (getCookie('login')) {
+      this.setStateLogin(true);
+    } else {
+      this.setStateLogin(false);
+    }
+    this.reloadCart();
+  }
+
   render() {
-    const { isLogin, isAdminLogin, admin } = this.state;
+    const { cartCount, isLogin, isAdminLogin, admin } = this.state;
     return (
       <>
         <Router>
           <Switch>
             <Route exact path="/">
-              <HomePage isLogin={isLogin}>
+              {<HomePage cartCount={cartCount} isLogin={isLogin}>
                 <Slide />
                 <Content />
-              </HomePage>
+              </HomePage>}
             </Route>
             <Route exact path='/product'>
-              <HomePage isLogin={isLogin}>
-                <ShopPage isLogin={isLogin} />
-              </HomePage>
+              {<HomePage cartCount={cartCount} isLogin={isLogin}>
+                <ShopPage checkStillLogin={this.checkStillLogin} isLogin={isLogin} />
+              </HomePage>}
             </Route>
-
-            <Route exact path='/cart'>
-              <HomePage isLogin={isLogin}>
-                <Cart />
-              </HomePage>
+            <Route exact path='/cart' >
+              {<HomePage cartCount={cartCount} isLogin={isLogin}>
+                <Cart checkStillLogin={this.checkStillLogin} />
+              </HomePage>}
             </Route>
             <UnAuthenRoute exact path='/product/:id'>
-              <HomePage isLogin={isLogin} >
-                <ProductDetails />
+              <HomePage cartCount={cartCount} isLogin={isLogin} >
+                <ProductDetails reloadCart={this.reloadCart} isLogin={isLogin} />
               </HomePage>
             </UnAuthenRoute>
-
             <UnAuthenRoute exact={true} isLogin={isLogin} path='/login'>
               <SignIn saveAuthentication={this.saveAuthentication} setStateLogin={this.setStateLogin} />
             </UnAuthenRoute>

@@ -1,10 +1,63 @@
-.cardHover{
+.cardHover {
   /* display: none; */
+  position: absolute;
+  top: 5px;
+  left: 5px;
   opacity: 0.01;
   width: 165px;
   height: 235px;
-  margin-left: -65px;
 }
 .cardHover:hover {
   opacity: 1;
+}
+
+.card-body {
+  padding: 10px 10px 30px 10px !important;
+}
+
+.title-name {
+  font-size: 20px;
+  margin-bottom: 10px !important;
+  color: rgb(0, 95, 0) !important;
+}
+
+.card-body > * {
+  font-size: 1;
+}
+
+.card-body:hover {
+  text-decoration: none !important;
+}
+
+.colors-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pick-colors {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  border-radius: 100%;
+  border: 1px solid rgb(65, 65, 65);
+  cursor: pointer;
+}
+
+.hover-green:hover {
+  color: green;
+  cursor: pointer;
+}
+
+.shopPage-img {
+  height: 175px;
+}
+
+.buy-btn {
+  background-color: white;
+  color: green;
+  border: 2px solid green
+}
+
+.buy-btn:hover {
+  color: green;
 }

@@ -34,7 +34,9 @@
   color: rgb(23, 192, 51);
 }
 
-.fa-sign-out-alt {
+.fa-sign-out-alt,
+.fa-shopping-cart {
+  padding-left: 30px;
   font-size: 25px;
   color: rgb(0, 59, 10);
 }

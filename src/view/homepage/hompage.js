@@ -5,19 +5,20 @@ import Navigation from '../../component/nav/nav';
 import Footer from '../../component/footer/footer';
 import Slide from '../../component/slide/slide';
 import { withRouter } from 'react-router';
-class HomePage extends React.Component{
+class HomePage extends React.Component {
     constructor(props) {
         super(props)
     }
-    render(){
-        const {isLogin, children} = this.props;
-        return(
+
+    render() {
+        const { isLogin, children, cartCount } = this.props;
+        return (
             <>
                 {/* <Navigation/> */}
-                <Header isLogin = {isLogin}/>
-                <div style ={{height: "70px"}}></div>
+                <Header cartCount={cartCount} isLogin={isLogin} />
+                <div style={{ height: "55px" }}></div>
                 {children}
-                <Footer/>
+                <Footer />
             </>
 
         )

@@ -4,11 +4,12 @@ import { getAllProduct } from "../../utils/fetchDataProduct";
 import { withRouter } from "react-router";
 import { Carousel } from "react-bootstrap";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 //_________________
-import { findCart, addToCart } from "../../utils/fetchDataProduct";
+import { findCart, addToCart, getAllComment } from "../../utils/fetchDataProduct";
 import { getCookie } from "../../utils/fetchData";
 import "./comment.css";
-
+import Button from '@material-ui/core/Button';
 const colorTemplate = {
   red: "red",
   black: "black",
@@ -26,7 +27,9 @@ class ProductDetails extends React.Component {
       linkImage: "",
       //comment
       comment: "",
-      allComment: ""
+      allComment: "",
+      color: "",
+      remind: false
     };
     this.handlePlus = this.handlePlus.bind(this);
     this.handleMinus = this.handleMinus.bind(this);
@@ -42,129 +45,157 @@ class ProductDetails extends React.Component {
   }
   // adjust quantity to buy
   handlePlus(e) {
-    // console.log("plus", this.state.count);
-    this.setState({
-      count: this.state.quantity++,
-    });
+    this.setState((currState) => {
+      return { count: (currState.count + 1) }
+    })
   }
-  handleMinus(e) {
-    // console.log("minus", this.state.count);
 
-    if (this.state.count > 0) {
-      this.setState({
-        count: this.state.quantity--,
-      });
-    } else if (this.state.count == 0) {
-      this.setState({
-        count: 0,
-      });
-    }
+  handleMinus(e) {
+    this.setState((currState) => {
+      return { count: (currState.count == 0) ? currState.count : (currState.count - 1) }
+    })
   }
+
   handleChangeInput(e) {
     const { name, value } = e.target;
     this.setState({
       [name]: value,
     });
   }
+
   pickSize(e) {
     e.preventDefault();
-
-    console.log(e.target.value);
     this.setState({
       size: e.target.value,
     });
-    console.log("size", this.state.size);
     //
     const buttons = document.querySelectorAll("#buttonSize");
     buttons.forEach((b) => {
-        clearAll(buttons);
-     
+      clearAll(buttons);
     });
 
     function clearAll(buttons) {
       buttons.forEach((b) => {
-        b.className = b.className.replace("active", "");
+        b.className = b.className.replace("btn-active", "");
       });
     }
-    e.target.classList.toggle("active");
+    e.target.classList.toggle("btn-active");
 
   }
   //pickColor________________________________________
- pickColor(e) {
+  pickColor(e) {
     e.preventDefault();
-    const buttons =  document.querySelectorAll("#buttonColor");
-    buttons.forEach( (b) => {
-        clearAll(buttons);
+    const buttons = document.querySelectorAll("#buttonColor");
+    buttons.forEach((b) => {
+      clearAll(buttons);
     });
     e.target.classList.toggle("toggle");
 
-     function clearAll(buttons) {
+    function clearAll(buttons) {
       buttons.forEach((b) => {
         b.className = b.className.replace("toggle", "");
       });
     }
 
     const input = e.target.value;
+    console.log({ input })
     const findIndex = this.state.details.colors.find(
       (color) => color.color === input
     );
-     // console.log(findIndex);
-     this.setState({
+    this.setState({
+      color: input,
       linkImage: findIndex.image,
     });
   }
-  // add to cart_________________________________________
-  addToCart(e) {
-    e.preventDefault();
-    const userID = getCookie("userID");
-    console.log(userID);
 
-    const cart = findCart(userID).then((res) => console.log( "cart", res));
+  checkValidProduct() {
+    const { count, color, linkImage, size } = this.state;
+    if (count > 0 && color && linkImage && size) {
+      return true
+    } else {
+      this.toggleRemind(true)
+    }
+  }
+
+  toggleRemind = (state) => {
+    this.setState({
+      remind: state
+    })
+  }
+
+  // add to cart_________________________________________
+  async addToCart(e) {
+    e.preventDefault();
+    const { details, count, quantity, color, linkImage, size } = this.state;
+    if (this.checkValidProduct() && this.props.isLogin) {
+      const userID = getCookie('userID');
+      const cart = await findCart(userID);
+      const product = {
+        id: details._id,
+        quantity: count,
+        product_name: details.product_name,
+        color: color,
+        image: linkImage,
+        size: size,
+        gender: true,
+        price: details.price
+      }
+      cart.products.push(product)
+      try {
+        const { data } = await addToCart(cart);
+        if (data.products) {
+          alert('Product added to cart ')
+          this.props.reloadCart();
+          this.toggleRemind(false);
+        }
+      } catch (err) {
+        console.log(err.response.status)
+        if (err.response.status == 404) {
+          alert('Product out of stock !');
+        }
+        else if (err.response.status == 409) {
+          alert('This product already in your cart !');
+        }
+      }
+    }
+    if (!this.props.isLogin) {
+      this.props.history.push('/login');
+    }
+
   }
   //comment button_______________________________________
- async handleComment(e){
+  async handleComment(e) {
     e.preventDefault();
-   
-    const userID = getCookie("userID");
-    if(userID){
+    if (this.props.isLogin) {
+      const userID = jwt_decode(getCookie("login")).sub;
+      console.log(userID)
       const apiComment = "http://localhost:3030/comment";
-      // const apiGetAllComment = `http://localhost:3030/comment/${userID}`
-      const body={
+      const body = {
         userID: userID,
         productID: this.props.match.params.id,
         content: this.state.comment
       }
       const postComment = await axios.post(apiComment, body);
-      console.log("comment", postComment.data);
-
-      // const getComment = await axios.get(apiGetAllComment);
-      // console.log("get comment fetch", apiGetAllComment.data);
-    }else{
-      alert("have no user");
+      if (postComment) {
+        const allComment = await getAllComment(this.props.match.params.id);
+        console.log(allComment)
+        this.setState({
+          allComment: allComment.reverse()
+        })
+      }
+    } else {
+      this.props.history.push('/login');
     }
-   
-    //post data
-   
-
-
   }
-
-//  async fetchAllComment(){
-//             return getComment.data;
-//}
 
   async componentDidMount() {
     const userID = getCookie("userID");
     // console.log("userId", userID);
-
-  const apiGetAllComment = `http://localhost:3030/comment/${this.props.match.params.id}`;
-  console.log("api",apiGetAllComment);
-   const getComment = await axios.get(apiGetAllComment);
-   this.setState({
-     allComment: getComment.data
-   })
-   console.log(getComment.data);
-
+    const apiGetAllComment = `http://localhost:3030/comment/${this.props.match.params.id}`;
+    const getComment = await axios.get(apiGetAllComment);
+    this.setState({
+      allComment: getComment.data.reverse()
+    })
     const getProduct = getAllProduct().then((res) => {
       this.setState({
         products: res,
@@ -180,31 +211,25 @@ class ProductDetails extends React.Component {
 
     });
     // const getAllComment = this.fetchAllComment.then( res => console.log("iiwjwihiwhfwihfifh",res))
-    
+
   }
+
   render() {
-    const { details, allComment } = this.state;
+    const { details, allComment, remind } = this.state;
     return (
       <>
         {details !== "" ? (
           <>
             <section className="bg-light">
-                <div className="container pb-5">
+              <div className="container pb-5">
                 <div className="row">
                   <div className="col-lg-5 mt-5">
                     <div className="card mb-3">
-                      {/* <img
-                        className="card-img img-fluid"
-                        src={`http://localhost:3030/${details.colors[this.state.index].image}`}
-                        alt="Card image cap"
-                        id="product-detail"
-                      /> */}
-
                       {this.state.linkImage !== "" ? (
                         <Carousel fade>
                           {details.colors.map((color, index) => {
                             return (
-                              <Carousel.Item>
+                              <Carousel.Item interval={10000000000}>
                                 <div
                                   style={{ width: "450px", height: "440px" }}
                                 >
@@ -222,12 +247,8 @@ class ProductDetails extends React.Component {
                         <Carousel fade>
                           {details.colors.map((color, index) => {
                             return (
-                              <Carousel.Item>
-                                <img
-                                  className="d-block w-100"
-                                  src={`http://localhost:3030/${color.image}`}
-                                  alt="First slide"
-                                />
+                              <Carousel.Item interval={10000000000}>
+                                <img className="d-block w-100 h-100" src={`http://localhost:3030/${color.image}`} alt="First slide" />
                               </Carousel.Item>
                             );
                           })}
@@ -240,50 +261,25 @@ class ProductDetails extends React.Component {
                   <div className="col-lg-7 mt-5">
                     <div className="card">
                       <div className="card-body">
-                        <h1 className="h2">{details.product_name}</h1>
-                        <p className="h3 py-2">${details.price}</p>
-                        <p className="py-2">
-                          <i className="fa fa-star text-warning" />
-                          <i className="fa fa-star text-warning" />
-                          <i className="fa fa-star text-warning" />
-                          <i className="fa fa-star text-warning" />
-                          <i className="fa fa-star text-secondary" />
-                          <span className="list-inline-item text-dark">
-                            Rating 4.8 | 36 Comments
-                          </span>
-                        </p>
+                        <h1 className="h3">{`${details.product_name}`}<span style={{ fontSize: '16px' }}>({details.gender == true ? 'Male' : 'Female'})</span></h1>
+                        <p className="h3 py-2 price-tag">${details.price}</p>
+
                         <h6>Description:</h6>
                         <p>{details.description}</p>
-                        <ul className="list-inline">
+                        <ul className="list-inline flex-align-center">
                           <li className="list-inline-item">
-                            <h6>Avaliable Color :</h6>
+                            <h6 style={{ marginBottom: '0px' }}>Avaliable Color :</h6>
                           </li>
                           <li className="list-inline-item">
-                            <p
-                              className="text-muted"
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                              }}
-                            >
+                            <div className="pick-colors-product">
                               {details.colors.map((color, index) => {
                                 return (
-                                  <button
-                                    key={index}
-                                    id="buttonColor"
-                                    onClick={this.pickColor}
-                                    value={color.color}
-                                    className="color"
-                                    style={{
-                                      background: `${
-                                        colorTemplate[color.color]
-                                      }`,
-                                    }}
-                                  ></button>
+                                  <button key={index} id="buttonColor" onClick={this.pickColor} value={color.color} className="color"
+                                    style={{ background: `${colorTemplate[color.color]}`, }}>
+                                  </button>
                                 );
                               })}
-                            </p>
+                            </div>
                           </li>
                         </ul>
 
@@ -297,83 +293,52 @@ class ProductDetails extends React.Component {
                             <div id="containerSize" className="col-auto">
                               <ul className="list-inline pb-3">
                                 <li className="list-inline-item">
-                                  Size :
-                                  {/* <input
-                                    type="hidden"
-                                    name="product-size"
-                                    id="product-size"
-                                    defaultValue="S"
-                                  /> */}
+                                  <h6> Size :</h6>
                                 </li>
                                 {details.size.map((size, index) => {
                                   return (
-                                    <button
-                                      key={index}
-                                      onClick={this.pickSize}
-                                      value={size}
-                                      id = "buttonSize"
-                                      className="btn btn-success btn-size"
+                                    <button key={index} onClick={this.pickSize} value={size} id="buttonSize" className="btn-size"
                                       style={{ marginLeft: 5 }}
                                     >
                                       {size}
-                                    </button>
-                                  );
+                                    </button>);
                                 })}
                               </ul>
                             </div>
                             <div className="col-auto">
                               <ul className="list-inline pb-3">
                                 <li className="list-inline-item text-right">
-                                  Quantity
-                                  <input
-                                    type="hidden"
-                                    name="product-quanity"
-                                    id="product-quanity"
-                                    defaultValue={1}
-                                  />
+                                  <h6>Quantity</h6>
                                 </li>
                                 <li className="list-inline-item">
-                                  <span
-                                    className="btn btn-success"
-                                    id="btn-minus"
-                                    onClick={this.handleMinus}
-                                  >
-                                    -
-                                  </span>
+                                  <Button size="small" className="" id="btn-minus" onClick={this.handleMinus}>
+                                    <i className="fas fa-chevron-left"></i>
+                                  </Button>
                                 </li>
                                 <li className="list-inline-item">
-                                  <span
-                                    className="badge bg-secondary"
-                                    id="var-value"
-                                  >
+                                  <span className="" id="var-value">
                                     {this.state.count}
                                   </span>
                                 </li>
                                 <li className="list-inline-item">
-                                  <span
-                                    className="btn btn-success"
-                                    id="btn-plus"
-                                    onClick={this.handlePlus}
-                                  >
-                                    +
-                                  </span>
+                                  <Button size="small" className="" id="btn-plus" onClick={this.handlePlus}>
+                                    <i className="fas fa-chevron-right"></i>
+                                  </Button>
                                 </li>
                               </ul>
                             </div>
                           </div>
                           <div className="row pb-3">
                             <div className="col d-grid">
-                              <button
-                                type="submit"
-                                className="btn btn-success btn-lg"
-                                name="submit"
-                                value="addtocard"
-                                onClick= {this.addToCart}
-                              >
+                              <button type="submit" className="btn btn-success btn-lg addcart-btn" name="submit" value="addtocard" onClick={this.addToCart}>
                                 Add To Cart
                               </button>
                             </div>
                           </div>
+                          {remind == true ? <div className="remind">
+                            Please select a shoe size, a color and quantity
+                          </div> : <></>}
+
                         </form>
                       </div>
                     </div>
@@ -387,69 +352,39 @@ class ProductDetails extends React.Component {
                 <div className="row">
                   <div className="col-sm-8">
                     <form>
-                      <h3 className="pull-left">Comment</h3>
+                      <h3 className="pull-left price">Reviews</h3>
                       <fieldset>
                         <div className="row">
-                          <div className="col-sm-3 col-lg-2 hidden-xs">
-                            {/* <img className="img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt /> */}
-                          </div>
                           <div className="form-group col-xs-12 col-sm-9 col-lg-10">
-                            <textarea
-                              className="form-control"
-                              id="message"
-                              name ="comment"
-                              placeholder="Your message"
-                              onChange = {this.handleChangeInput}
-                              required
-                              defaultValue=""
-                            />
-                            <button
-                              onClick ={this.handleComment}
-                              type="submit"
-                              className="btn btn-success pull-right "
-                            >
+                            <textarea className="form-control message-textarea" id="message" name="comment" placeholder="Your review"
+                              onChange={this.handleChangeInput} required />
+                            <button onClick={this.handleComment} type="submit" className="btn btn-success pull-right ">
                               Submit
                             </button>
                           </div>
                         </div>
                       </fieldset>
                     </form>
-                    <h3>{allComment.length} Comments</h3>
+                    <h3 >{allComment.length} Reviews</h3>
                     {/* COMMENT 1 - START */}
-                    
                     <div className="media">
-                    {
-                      (allComment !== "") ? 
-                      (
-                        allComment.map( (allComment, index) => (
-                          <div>
-                        <a className="pull-left" href="#">
-                        <img
-                          className="media-object"
-                          src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png"
-                          alt
-                        />
-                      </a>
-                      <div className="media-body">
-                        <h4 className="media-heading">{allComment.username}</h4>
-                        <p>{allComment.content}</p>
-                        <ul className="list-unstyled list-inline media-detail pull-right">
-                          <li>
-                            <i className="fa fa-calendar" />
-                            {allComment.date}
-                          </li>
-                        </ul>
-                   
-                      </div>
-                        </div>
-                        ))
-                       
-                       
-                      ) : " "
-                    }
-                   
+                      {(allComment !== "") ?
+                        (allComment.map((allComment, index) => (
+                          <div className="media-body mb-3">
+                            <img className="media-object" src="https://cdn1.iconfinder.com/data/icons/app-user-interface-glyph/64/user_man_user_interface_app_person-512.png" />
+                            <div>
+                              <p className="h5 media-heading mb-1 ml-2 price">{allComment.username}</p>
+                              <ul className="list-unstyled list-inline media-detail pull-right mb-2 ml-2">
+                                <li>
+                                  {new Date((allComment.date)).toDateString()}
+                                </li>
+                              </ul>
+                              <p className="ml-2">{allComment.content}</p>
+                            </div>
+                          </div>
+                        ))) : " "
+                      }
                     </div>
-                    {/* COMMENT 1 - END */}
                   </div>
                 </div>
               </div>
@@ -457,7 +392,8 @@ class ProductDetails extends React.Component {
           </>
         ) : (
           ""
-        )}
+        )
+        }
       </>
     );
   }

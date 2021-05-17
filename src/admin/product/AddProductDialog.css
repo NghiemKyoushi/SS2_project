@@ -60,3 +60,7 @@
   flex-direction: column;
   width: 50%;
 }
+
+#black-color{
+  color: black !important;
+}

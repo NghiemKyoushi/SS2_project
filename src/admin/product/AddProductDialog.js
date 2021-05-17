@@ -27,6 +27,7 @@ class AddHomestayDialog extends Component {
         const price = document.querySelector('.price').value;
         const size = document.querySelector('.size').value;
         const description = document.querySelector('.description').value;
+        const gender = document.querySelector('#gender').value;
         const colors = [];
         const images = [];
         document.querySelectorAll('.color').forEach(color => {
@@ -41,6 +42,7 @@ class AddHomestayDialog extends Component {
         data.append("quantity", quantity)
         data.append("price", price)
         data.append("description", description)
+        data.append("gender", gender)
         data.append("size", size)
         colors.map(color => {
             data.append("colors", color)
@@ -94,13 +96,22 @@ class AddHomestayDialog extends Component {
                         <DialogContentText>
                             Price
                         </DialogContentText>
-                        <input className="price" name="price" type="number" onChange={this.handleChangeInput} />
+                        <input id="black-color" className="price" name="price" type="number" onChange={this.handleChangeInput} />
                     </div>
                     <div>
                         <DialogContentText>
                             Size
                         </DialogContentText>
                         <input className="size" name="size" type="text" onChange={this.handleChangeInput} />
+                    </div>
+                    <div>
+                        <DialogContentText>
+                            Gender
+                        </DialogContentText>
+                        <select className="size" id="gender" name="gender" onChange={this.handleChangeInput}>
+                            <option value="true">Male</option>
+                            <option value="false">Female</option>
+                        </select>
                     </div>
                     <div className="full-size">
                         <DialogContentText>

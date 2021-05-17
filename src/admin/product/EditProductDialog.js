@@ -39,6 +39,7 @@ class EditProductDialog extends Component {
         const size = document.querySelector('.size').value.split(',');
         const description = document.querySelector('.description').value;
         const colors = [];
+        const gender = document.querySelector('#gender').value;
         const data = new FormData();
         document.querySelectorAll('.color').forEach((color, index) => {
             colors.push({ color: color.value })
@@ -59,7 +60,7 @@ class EditProductDialog extends Component {
             }
         })
         // console.log({ _id: pickedProduct._id, colors, product_name, quantity, price, size, description })
-        await editPickedProduct({ _id: pickedProduct._id, colors, product_name, quantity, price, size, description })
+        await editPickedProduct({ _id: pickedProduct._id, colors, product_name, gender, quantity, price, size, description })
 
     }
 
@@ -110,7 +111,7 @@ class EditProductDialog extends Component {
                         <DialogContentText>
                             Price
                         </DialogContentText>
-                        <input defaultValue={price} className="price" name="price" type="number" onChange={this.handleChangeInput} />
+                        <input id="black-color" defaultValue={price} className="price" name="price" type="number" onChange={this.handleChangeInput} />
                     </div>
                     <div>
                         <DialogContentText>
@@ -118,12 +119,22 @@ class EditProductDialog extends Component {
                         </DialogContentText>
                         <input defaultValue={size.toString()} className="size" name="size" type="text" onChange={this.handleChangeInput} />
                     </div>
+                    <div>
+                        <DialogContentText>
+                            Gender
+                        </DialogContentText>
+                        <select className="size" id="gender" name="gender" onChange={this.handleChangeInput}>
+                            <option value="true">Male</option>
+                            <option value="false">Female</option>
+                        </select>
+                    </div>
                     <div className="full-size">
                         <DialogContentText>
                             Description
                         </DialogContentText>
                         <textarea defaultValue={description} name="description" id="" className="description"></textarea>
                     </div>
+
                     {/*  */}
 
                     <>

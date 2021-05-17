@@ -1,220 +1,171 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import {Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './shopage.css';
 
-import { getAllProduct} from '../../utils/fetchDataProduct';
+import { getAllProduct } from '../../utils/fetchDataProduct';
+import { colors } from "@material-ui/core";
 
 class ShopPage extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      product: []
+      product: [],
+      colors: ['red', 'black', 'orange', 'brown', 'green', 'white', 'blue', 'pink', 'grey'],
+      filterColor: null,
+      filterGender: null
     }
+    this.changeColor = this.changeColor.bind(this);
+    this.filterColor = this.filterColor.bind(this);
+    this.filterGender = this.filterGender.bind(this);
   }
-  
-  componentDidMount(){
-    console.log("show product");
-    const getProduct = getAllProduct().then(res => {
 
-      console.log("show product", res);
+  componentDidMount() {
+    const getProduct = getAllProduct().then(res => {
       this.setState({
         product: res
       })
-      console.log("product: ", this.state.product)
     });
-
   }
+
+  changeColor(color) {
+    this.setState({
+      filterGender: null,
+      filterColor: color
+    })
+  }
+
+  filterColor(products) {
+    const { filterColor } = this.state;
+    if (filterColor != null) {
+      return products.filter(product => {
+        return (product.colors.filter(color => color.color == filterColor).length > 0) ? true : false
+      })
+    }
+    return products;
+  }
+
+  filterByGender(gender) {
+    this.setState({
+      filterColor: null,
+      filterGender: gender
+    })
+  }
+
+  filterGender(products) {
+    const { filterGender } = this.state;
+    if (filterGender != null) {
+      return products.filter(product => product.gender == filterGender)
+    }
+    return products;
+  }
+
+
+  //product.colors
+  getImageByColor(colors) {
+    const { filterColor } = this.state;
+    if (filterColor != null) {
+      return colors.filter(color => color.color == filterColor)[0].image;
+    }
+    return colors[0].image;
+  }
+
+  genderToString(gender) {
+    return (gender == true) ? 'Male' : 'Female'
+  }
+
   render() {
-    const {product} = this.state;
-    const {isLogin} = this.props;
+    const { product, colors, filterColor, filterGender } = this.state;
+    const { isLogin } = this.props;
     return (
       <>
-     
-      <div className="container py-5">
-        <div className="row">
-          <div className="col-lg-3">
-            <h1 className="h2 pb-4">Categories</h1>
-            <ul className="list-unstyled templatemo-accordion">
-              <li className="pb-3">
-                <p className="d-flex justify-content-between text-decoration-none h5" data-toggle="collapse" data-target="#collapseExample"  aria-expanded="false">
-                  Gender
-                  <i className="fa fa-fw fa-chevron-circle-down mt-1" />
-                </p>
-                <ul  className="collapse show list-unstyled pl-3">
-                  <li>  
-                    <p className="text-decoration-none collapse" id="collapseExample">
-                      Men
+        <div className="container py-5">
+          <div className="row">
+            <div className="col-lg-3">
+              <p className="h5 pb-4" style={{ color: 'green' }}>Categories</p>
+              <ul className="list-unstyled templatemo-accordion">
+                <li className="pb-2">
+                  <p className="d-flex justify-content-between text-decoration-none h6" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false">
+                    GENDER
+                    <i className="fas fa-chevron-down "></i>
+                  </p>
+                  <ul className="collapse show list-unstyled pl-3 pt-2">
+                    <li onClick={() => { this.filterByGender(true) }}>
+                      <p className="text-decoration-none collapse hover-green" style={{ fontSize: '15px' }} id="collapseExample">
+                        Men
                     </p>
-                  </li>
-                  <li>
-                    <p className="text-decoration-none collapse" id="collapseExample">
-                      Women
+                    </li>
+                    <li onClick={() => { this.filterByGender(false) }}>
+                      <p className="text-decoration-none collapse hover-green" style={{ fontSize: '15px' }} id="collapseExample">
+                        Women
                     </p>
-                  </li>
-                </ul>
-              </li>
-
-
-              <li className="pb-3">
-                <p className="d-flex justify-content-between text-decoration-none h5" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
-                  Sale
-                  <i className="pull-right fa fa-fw fa-chevron-circle-down mt-1" />
-                </p>
-                <ul  className=" collapse show list-unstyled pl-3">
-                  <li>
-                    <p className="collapse text-decoration-none"  id="collapseExample2">
-                    Sport</p>
-                  </li>
-                  <li>
-                    <p className="collapse text-decoration-none"  id="collapseExample2">
-                      Luxury
-                    </p>
-                  </li>
-                </ul>
-              </li>
-
-
-
-              <li className="pb-3">
-                <p className="collapse d-flex justify-content-between text-decoration-none h5 " data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
-                  Product
-                  <i className="pull-right fa fa-fw fa-chevron-circle-down mt-1" />
-                </p>
-                <ul  className="collapse show list-unstyled pl-3">
-                  <li>
-                    <p className=" collapse text-decoration-none" id="collapseExample3">Bag</p>
-                  </li>
-                  <li>
-                    <p className=" collapse text-decoration-none" id="collapseExample3">Sweather</p>
-                  </li>
-                  <li>
-                    <p className=" collapse text-decoration-none" id="collapseExample3">Sunglass</p>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div className="col-lg-9">
-            <div className="row">
-              <div className="col-md-6">
-                <ul className="list-inline shop-top-menu pb-3 pt-1">
-                  <li className="list-inline-item">
-                    <a className="h3 text-dark text-decoration-none mr-3">
-                      All
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a className="h3 text-dark text-decoration-none mr-3">
-                      Men's
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a className="h3 text-dark text-decoration-none">Women's</a>
-                  </li>
-                </ul>
-              </div>
-              <div className="col-md-6 pb-4">
-                <div className="d-flex">
-                  <select className="form-control">
-                    <option>Featured</option>
-                    <option>A to Z</option>
-                    <option>Item</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            {/*  //card */}
-           
-            <div className="row">
-
-            {
-              (product) ? (
-                product.map( (product, index) => {
-                  return (
-                    <div className="col-md-4" key ={index}>
-                <div className="card mb-4 product-wap rounded-0 shadow">
-                  <div className=" card rounded-0 ">
-                    <img
-                      className="card-img rounded-0 img-fluid "
-                      src={`http://localhost:3030/${product.colors[0].image}`}
-                    />
-                    <div  className="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center " >
-                      <ul className="cardHover list-unstyled">
-                        <li>
-                          <a className="btn btn-success text-white">
-                            <i className="far fa-heart" />
-                          </a>
-                        </li>
-                        <li>
-                          <Link to ={`/product/${product._id}`} className="btn btn-success text-white mt-2">
-                            <i className="far fa-eye" />
-                          </Link>
-                        </li>
-                        <li>
-                          <a className="btn btn-success text-white mt-2">
-                            <i className="fas fa-cart-plus" />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <a className="h3 text-decoration-none">{product.product_name}</a>
-                    <ul className="w-100 list-unstyled d-flex justify-content-between mb-0">
-                      <li>{product.size}</li>
-                      <li className="pt-2">
-                        <span className="product-color-dot color-dot-red float-left rounded-circle ml-1" />
-                        <span className="product-color-dot color-dot-blue float-left rounded-circle ml-1" />
-                        <span className="product-color-dot color-dot-black float-left rounded-circle ml-1" />
-                        <span className="product-color-dot color-dot-light float-left rounded-circle ml-1" />
-                        <span className="product-color-dot color-dot-green float-left rounded-circle ml-1" />
-                      </li>
-                    </ul>
-                    <ul className="list-unstyled d-flex justify-content-center mb-1">
-                      <li>
-                        <i className="text-warning fa fa-star" />
-                        <i className="text-warning fa fa-star" />
-                        <i className="text-warning fa fa-star" />
-                        <i className="text-muted fa fa-star" />
-                        <i className="text-muted fa fa-star" />
-                      </li>
-                    </ul>
-                    <p className="text-center mb-0">{product.price}$</p>
-                  </div>
-                </div>
-              </div>
-                  )
-                } )
-              ) : " "
-            }
-              
-            </div>
-            {/* <div div="row">
-              <ul className="pagination pagination-lg justify-content-end">
-                <li className="page-item disabled">
-                  <a
-                    className="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0"
-                    tabIndex={-1}
-                  >
-                    1
-                  </a>
+                    </li>
+                  </ul>
                 </li>
-                <li className="page-item">
-                  <a className="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark">
-                    3
-                  </a>
+                <li className="pb-3">
+                  <p className="collapse d-flex justify-content-between text-decoration-none h6" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+                    COLORS
+                    <i className="fas fa-chevron-down "></i>
+                  </p>
+                  <ul className="collapse colors-list show list-unstyled p-1 pt-1">
+                    {colors.map((c, index) => {
+                      return <li>
+                        <div className="pick-colors collapse text-decoration-none"
+                          style={{ fontSize: '14px', backgroundColor: `${c}` }} id="collapseExample3"
+                          onClick={() => { this.changeColor(c) }}>
+                        </div>
+                      </li>
+                    })}
+                  </ul>
                 </li>
               </ul>
-            </div> */}
+            </div>
+            <div className="col-lg-9">
+              <div className="d-flex justify-content-between w-100">
+                <div> FILTER BY: {`${filterColor && filterColor.toUpperCase() || filterGender != null && this.genderToString(filterGender) || ''}`} </div>
+                <div className="row">
+                  <div className=" d-flex ">
+                    <select className="form-control">
+                      <option>Featured</option>
+                      <option>A to Z</option>
+                      <option>Item</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              {/*  //card */}
+
+              <div className="row">
+                {
+                  (product && this.filterColor(product).length > 0 &&
+                    this.filterGender(this.filterColor(product)).map((product, index) => {
+                      return (
+                        <div className="col-md-4" key={index}>
+                          <div className="card mb-4 product-wap rounded-0 shadow" style={{ position: 'relative' }}>
+                            <div className=" card rounded-0 ">
+                              <img className="card-img rounded-0 img-fluid shopPage-img" src={`http://localhost:3030/${this.getImageByColor(product.colors)}`} />
+                              <div className="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center " > </div>
+                            </div>
+                            <Link to={`/product/${product._id}`} className="card-body">
+                              <p className="title-name text-decoration-none ">{product.product_name} <span>{product.gender == true ? 'Male' : 'Female'}</span></p>
+                              <ul className="w-100 flex-wrap list-unstyled d-flex justify-content-start mb-0 text-dark" > Sizes:	&nbsp;
+                                {product.size.map(s => {
+                                return <button className="btn-size mr-1 ">{s}</button>
+                              })}
+                              </ul>
+                              <button className="text-center mb-0 mt-4 btn w-100 buy-btn " style={{ fontSize: "16px" }}>$ {product.price}</button>
+                            </Link>
+                          </div>
+                        </div>
+                      )
+                    })
+                  ) || <p className="w-100 text-center"> No item in this categories !</p>
+                }
+
+              </div>
+            </div>
           </div>
         </div>
-      </div>
       </>
     );
   }

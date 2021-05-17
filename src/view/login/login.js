@@ -18,13 +18,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 //import function
-<<<<<<< HEAD
-import {setCookie, getCookie} from '../../utils/utils'
-import { Login } from "../../utils/utils";
-=======
 import { setCookie, getCookie } from "../../utils/fetchData";
 import { Login } from "../../utils/fetchData";
->>>>>>> fa15e21aa38f22e26c411dbd2d920172d3ff648a
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -67,21 +62,16 @@ class SignIn extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
- async onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault();
     const { username, password } = this.state;
-    console.log("login");
     const message = await Login(username, password).then(function (res) {
-      console.log("Vaooooooooo", res.data);
       if (res.data.message === "login successfully") {
         if (getCookie("login") !== "") {
           const login = getCookie("login");
           const decode = jwt_decode(login);
-          console.log("decode", decode);
-
-       
           setCookie("username", decode.uname, 100);
-          setCookie("userID", decode.sub,100);
+          setCookie("userID", decode.sub, 100);
         }
       } else {
         alert("Username Or password is not correct");
@@ -102,8 +92,6 @@ class SignIn extends React.Component {
 
   render() {
     const { classes } = this.props;
-    // console.log("props day",this.props);
-
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />

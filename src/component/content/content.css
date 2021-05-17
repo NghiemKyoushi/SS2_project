@@ -1,0 +1,8 @@
+.featured-product {
+  display: flex;
+  justify-content: center;
+}
+
+.card-img-top {
+  height: 250px;
+}

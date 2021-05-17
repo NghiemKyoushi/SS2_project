@@ -62,6 +62,7 @@ class Product extends Component {
     }
 
     async editPickedProduct(data) {
+        console.log({data})
         const result = await editProduct(data);
         this.handleToggleDialogEdit();
         this.getProducts();
@@ -143,14 +144,12 @@ class Product extends Component {
                                             {product.colors.map(color => {
                                                 return <div className="colors">
                                                     <p >{color.color}</p>
-                                                    {/* <img src={`http://localhost:3030/${color.image}`} alt={color.color} /> */}
-                                                    <img className="product-img" src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9f5962a5-6eb6-46d4-b538-130e70618576/downshifter-10-running-shoe-CrpbbD.png" alt="" />
+                                                    <img className="product-img" src={`http://localhost:3030/${color.image}`} alt="" />
                                                 </div>
                                             })}
                                         </div>
                                     </TableCell>
-                                    <TableCell align="left">{product.gender || `null`}</TableCell>
-
+                                    <TableCell align="left">{product.gender == true ? 'Male' : 'Female' || `null`}</TableCell>
                                     <TableCell align="left">
                                         <Button id={product._id} color="primary" onClick={this.handleToggleDialogEdit}>Edit</Button>
                                         <Button id={product._id} color="secondary" onClick={this.deleteProduct}>Delete</Button>

@@ -70,9 +70,10 @@ class Order extends Component {
                                     <TableCell align="left">
                                         {order.products.map(product => {
                                             return <div className="product-box">
-                                                <p>{product.name ? `Color: ${product.product_name}` : <p style={{ color: "red" }}>Deleted Product</p>}</p>
+                                                <p style={{ color: 'green' }}>{product.product_name ? `Product name: ${product.product_name}` : <p style={{ color: "red" }}>Deleted Product</p>}</p>
                                                 <p>{product.quantity ? `Quantity: ${product.quantity}` : ''}</p>
-                                                <p>{product.color ? `Size: ${product.size}` : ''}</p>
+                                                <p>{product.color ? `Color: ${product.color}` : ''}</p>
+                                                <p>{product.size ? `Size: ${product.size}` : ''}</p>
                                             </div>
                                         })}
                                     </TableCell>

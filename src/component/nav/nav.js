@@ -6,7 +6,7 @@ class Navigation extends React.Component {
   render() {
     return (
       <>
-        <nav 
+        <nav
           className="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block "
           id="templatemo_nav_top"
         >
