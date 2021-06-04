@@ -1,4 +1,6 @@
 import React from "react";
+import axios from 'axios';
+
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,7 +16,8 @@ import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 //fetch data
 
-import { Register } from '../../utils/utils/'
+import { Register } from '../../utils/utils'
+import { withRouter } from "react-router";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -52,10 +55,10 @@ class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      // name: "",
       username: "",
       email: "",
-      imageUrl: "",
+      // imageUrl: "",
       password: ""
     }
     this.onSubmit = this.onSubmit.bind(this);
@@ -66,17 +69,34 @@ class SignUp extends React.Component {
       [e.target.name]: e.target.value,
     });
   }
-  onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault();
     console.log("suppppppppp");
-    const message = Register(this.state).then(res =>
-      console.log(res.data)
-    )
-    if (message.data.message) {
-      alert("register successfully, come to login")
-    } else {
-      alert("Register false")
+    const {username, email, password} = this.state;
+    const body = {
+      username: username,
+      email: email,
+      password: password
     }
+    const url = "http://localhost:3030/register";
+    try {
+      const postData = await axios.post(url, body)
+      if (postData) {
+        this.props.history.push('/login');
+      }
+    } catch (e) {
+      // const message = "SignUp_false";
+      // return message;
+      alert("false")
+    }
+    // const message = Register(this.state).then(res =>
+    //   console.log(res.data)
+    // )
+    // if (message.data.message) {
+    //   alert("register successfully, come to login")
+    // } else {
+    //   alert("Register false")
+    // }
     // {success: true, message: "User registered successfully"}
   }
 
@@ -94,7 +114,7 @@ class SignUp extends React.Component {
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} >
                 <TextField
                   size="small"
                   autoComplete="uname"
@@ -111,20 +131,7 @@ class SignUp extends React.Component {
 
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="Name"
-                  label="Name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  onChange={this.onChange}
-                />
-              </Grid>
+             
               <Grid item xs={12}>
                 <TextField
                   size="small"
@@ -140,51 +147,8 @@ class SignUp extends React.Component {
 
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="imageUrl"
-                  label="imageUrl"
-                  name="imageUrl"
-                  type="text"
-                  autoComplete="imageUrl"
-                  onChange={this.onChange}
-
-                />
-              </Grid>
-              {/* <Grid item xs={12}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="idcard"
-                  label="IDCard"
-                  name="IDCard"
-                  type="number"
-                  autoComplete="IDCard"
-                  onChange= {this.onChange}
-
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="idcard"
-                  label="Credit No"
-                  name="creditno"
-                  type="number"
-                  autoComplete="creditno"
-                  onChange= {this.onChange}
-
-                />
-              </Grid> */}
+             
+            
               <Grid item xs={12}>
                 <TextField
                   size="small"
@@ -200,12 +164,7 @@ class SignUp extends React.Component {
 
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
+            
             </Grid>
             <Button
               type="submit"
@@ -235,4 +194,4 @@ class SignUp extends React.Component {
 
 }
 
-export default withStyles(styles)(SignUp);
+export default withStyles(styles) (withRouter(SignUp));

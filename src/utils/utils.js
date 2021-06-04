@@ -62,23 +62,7 @@ export async function Login(username, password) {
 }
 
 export async function Register(data) {
-  const body = {
-    name: data.name,
-    username: data.username,
-    email: data.email,
-    imageUrl: data.imageUrl,
-    password: data.password
-  }
-  const url = "http://localhost:8080/auth/signup";
-  try {
-    const postData = await axios.post(url, body)
-    if (postData) {
-      return postData;
-    }
-  } catch (e) {
-    const message = "SignUp_false";
-    return message;
-  }
+ 
 
 }
 
