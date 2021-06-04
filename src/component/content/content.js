@@ -37,7 +37,7 @@ class Content extends React.Component {
               {products && products.length > 0 && products.map(p => {
                 return <div className="col-12 col-md-4 mb-4">
                   <div className="card h-100">
-                    <a href="shop-single.html">
+                    <a href={`/product/${p._id}`}>
                       <img src={`http://localhost:3030/${p.colors[0].image}`} className="card-img-top" alt="..." />
                     </a>
                     <div className="card-body">

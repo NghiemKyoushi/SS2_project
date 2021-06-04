@@ -153,31 +153,31 @@ class Hanu_Shoes extends React.Component {
         <Router>
           <Switch>
             <UnAuthenRoute isLogin={isAdminLogin} exact path='/admin/login'>
-              <Navbar />
+              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
               <Login setStateAdmin={this.setStateAdmin} setStateAdminLogin={this.setStateAdminLogin} />
             </UnAuthenRoute>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin'>
-              <Navbar />
+              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
               <Sidebar admin={admin} />
               <Dashboard />
             </ProtectedRouteAdmin>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/dashboard'>
-              <Navbar />
+              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
               <Sidebar admin={admin} />
               <Dashboard />
             </ProtectedRouteAdmin>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/user'>
-              <Navbar />
+              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
               <Sidebar admin={admin} />
               <User />
             </ProtectedRouteAdmin>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/product'>
-              <Navbar />
+              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
               <Sidebar admin={admin} />
               <Product />
             </ProtectedRouteAdmin>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/order'>
-              <Navbar />
+              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
               <Sidebar admin={admin} />
               <Order />
             </ProtectedRouteAdmin>

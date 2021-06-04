@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import './Navbar.css'
 class Navbar extends Component {
     render() {
@@ -12,7 +12,12 @@ class Navbar extends Component {
                 </Link>
             </div>
             <div className="actions">
-                <Link to="admin/login">
+                <Link to="admin/login" onClick={() => {
+                    document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    this.props.setStateAdminLogin(false, () => {
+                        this.props.history.push("/admin/login");
+                    })
+                }}>
                     <ExitToAppIcon color="secondary" />
                 </Link>
             </div>
@@ -20,4 +25,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+export default withRouter(Navbar);
