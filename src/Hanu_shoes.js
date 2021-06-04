@@ -6,6 +6,7 @@ import HomePage from "./view/homepage/hompage";
 import UnAuthenRoute from './route/viewer_route/unAuthen_route';
 import ProtectedRouteAdmin from './route/admin-route/ProtectedRouteAdmin';
 import Login from './admin/login/Login';
+import SignUp from './view/signup/signup.js';
 import { getCookie } from './utils/utils'
 import { findCart } from './utils/fetchDataProduct'
 
@@ -144,6 +145,9 @@ class Hanu_Shoes extends React.Component {
             </UnAuthenRoute>
             <UnAuthenRoute exact={true} isLogin={isLogin} path='/login'>
               <SignIn saveAuthentication={this.saveAuthentication} setStateLogin={this.setStateLogin} />
+            </UnAuthenRoute>
+            <UnAuthenRoute exact={true} isLogin={isLogin} path='/signup'>
+              <SignUp/>
             </UnAuthenRoute>
           </Switch>
         </Router>
