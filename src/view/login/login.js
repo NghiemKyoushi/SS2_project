@@ -65,8 +65,30 @@ class SignIn extends React.Component {
   async onSubmit(e) {
     e.preventDefault();
     const { username, password } = this.state;
+    // const message = await Login(username, password).then(function (res) {
+    //   if (res.data.message === "login successfully") {
+    //     if (getCookie("login") !== "") {
+    //       const login = getCookie("login");
+    //       const decode = jwt_decode(login);
+    //       setCookie("username", decode.uname, 100);
+    //       setCookie("userID", decode.sub, 100);
+    //     }
+    //   } else {
+    //     alert("Username Or password is not correct");
+    //   }
+    // });
+    // if (getCookie("userID")) {
+    //   this.props.setStateLogin(true, () => {
+    //     this.props.history.push("/");
+    //   });
+    // }
+
     const { message } = await Login(username, password);
     if (message === "login successfully") {
+      const login = getCookie("login");
+      const decode = jwt_decode(login);
+      setCookie("username", decode.uname, 100);
+      setCookie("userID", decode.sub, 100);
       this.props.setStateLogin(true, () => {
         this.props.history.push("/");
       });
