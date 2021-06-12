@@ -13,6 +13,13 @@ import Button from '@material-ui/core/Button';
 const colorTemplate = {
   red: "red",
   black: "black",
+  grey: "grey",
+  yellow: "yellow",
+  pink: "pink",
+  purple: "purple",
+  green: "green",
+  blue: "#2196f3",
+  red: "red"
 };
 class ProductDetails extends React.Component {
   constructor(props) {

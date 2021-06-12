@@ -67,7 +67,7 @@ class ShopPage extends React.Component {
     if (filterColor != null) {
       return colors.filter(color => color.color == filterColor)[0].image;
     }
-    return colors[0].image;
+    return colors.length > 0 ? colors[0].image : null;
   }
 
   genderToString(gender) {
@@ -93,12 +93,12 @@ class ShopPage extends React.Component {
                     <li onClick={() => { this.filterByGender(true) }}>
                       <p className="text-decoration-none collapse hover-green" style={{ fontSize: '15px' }} id="collapseExample">
                         Men
-                    </p>
+                      </p>
                     </li>
                     <li onClick={() => { this.filterByGender(false) }}>
                       <p className="text-decoration-none collapse hover-green" style={{ fontSize: '15px' }} id="collapseExample">
                         Women
-                    </p>
+                      </p>
                     </li>
                   </ul>
                 </li>
@@ -150,8 +150,8 @@ class ShopPage extends React.Component {
                               <p className="title-name text-decoration-none ">{product.product_name} <span>{product.gender == true ? 'Male' : 'Female'}</span></p>
                               <ul className="w-100 flex-wrap list-unstyled d-flex justify-content-start mb-0 text-dark" > Sizes:	&nbsp;
                                 {product.size.map(s => {
-                                return <button className="btn-size mr-1 ">{s}</button>
-                              })}
+                                  return <button className="btn-size mr-1 ">{s}</button>
+                                })}
                               </ul>
                               <button className="text-center mb-0 mt-4 btn w-100 buy-btn " style={{ fontSize: "16px" }}>$ {product.price}</button>
                             </Link>

@@ -38,7 +38,7 @@ class Content extends React.Component {
                 return <div className="col-12 col-md-4 mb-4">
                   <div className="card h-100">
                     <a href={`/product/${p._id}`}>
-                      <img src={`http://localhost:3030/${p.colors[0].image}`} className="card-img-top" alt="..." />
+                      <img src={p.colors.length > 0 ? `http://localhost:3030/${p.colors[0].image}` : ``} className="card-img-top" alt="..." />
                     </a>
                     <div className="card-body">
                       <ul className="list-unstyled d-flex justify-content-between">

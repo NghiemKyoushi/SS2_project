@@ -140,7 +140,7 @@ class EditProductDialog extends Component {
                     <>
                         <div className="flex-center right-most full-size" style={{ minHeight: "50px", marginBottom: "0px", marginTop: "10px", paddingBottom: "0px" }}>
                             <IconButton className="green-color" size="small" aria-label="add" onClick={() => { this.setState({ numOfColors: numOfColors + 1 }) }}><AddIcon /></IconButton>
-                            <IconButton className="green-color" size="small" aria-label="remove" onClick={() => { this.setState({ numOfColors: numOfColors === pickedProduct.colors.length ? numOfColors : numOfColors - 1 }) }}><RemoveIcon /></IconButton>
+                            <IconButton className="green-color" size="small" aria-label="remove" onClick={() => { this.setState({ numOfColors: numOfColors < 1 ? numOfColors : numOfColors - 1 }) }}><RemoveIcon /></IconButton>
                         </div>
                         {colorInput}
                     </>
