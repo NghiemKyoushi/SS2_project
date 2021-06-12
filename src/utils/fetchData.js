@@ -49,14 +49,14 @@ export async function Login(username, password) {
     password: password
   }
   const url = "http://localhost:3030/login";
-  const postData = await axios({
+  const { data } = await axios({
     method: 'post',
     url: url,
     data: body,
     credentials: 'include'
   })
 
-  return postData;
+  return data;
 
 
 }
