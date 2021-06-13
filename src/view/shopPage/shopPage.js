@@ -11,7 +11,8 @@ class ShopPage extends React.Component {
     super(props);
     this.state = {
       product: [],
-      colors: ['red', 'black', 'orange', 'brown', 'green', 'white', 'blue', 'pink', 'grey'],
+      colors: ['red', 'black', 'orange', 'brown', 'green', 'white', 'blue', 'pink', 'grey', "purple"],
+      filterByName: null,
       filterColor: null,
       filterGender: null
     }
@@ -35,6 +36,15 @@ class ShopPage extends React.Component {
     })
   }
 
+
+
+  filterByGender(gender) {
+    this.setState({
+      filterColor: null,
+      filterGender: gender
+    })
+  }
+
   filterColor(products) {
     const { filterColor } = this.state;
     if (filterColor != null) {
@@ -45,17 +55,18 @@ class ShopPage extends React.Component {
     return products;
   }
 
-  filterByGender(gender) {
-    this.setState({
-      filterColor: null,
-      filterGender: gender
-    })
-  }
-
   filterGender(products) {
     const { filterGender } = this.state;
     if (filterGender != null) {
       return products.filter(product => product.gender == filterGender)
+    }
+    return products;
+  }
+
+  filterName(products) {
+    const { filterByName } = this.state;
+    if (filterByName != null && filterByName != "") {
+      return products.filter(product => { return product.product_name.toLowerCase().includes(filterByName.toLowerCase()) })
     }
     return products;
   }
@@ -75,7 +86,7 @@ class ShopPage extends React.Component {
   }
 
   render() {
-    const { product, colors, filterColor, filterGender } = this.state;
+    const { product, colors, filterColor, filterGender, filterByName } = this.state;
     const { isLogin } = this.props;
     return (
       <>
@@ -84,6 +95,13 @@ class ShopPage extends React.Component {
             <div className="col-lg-3">
               <p className="h5 pb-4" style={{ color: 'green' }}>Categories</p>
               <ul className="list-unstyled templatemo-accordion">
+                <input className="mb-4 w-100 p-1 pl-2 pr-2" type="text" placeholder="Search for shoes" onInput={(e) => {
+                  this.setState({
+                    filterByName: e.target.value,
+                    filterGender: null,
+                    filterColor: null
+                  })
+                }} />
                 <li className="pb-2">
                   <p className="d-flex justify-content-between text-decoration-none h6" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false">
                     GENDER
@@ -138,7 +156,7 @@ class ShopPage extends React.Component {
               <div className="row">
                 {
                   (product && this.filterColor(product).length > 0 &&
-                    this.filterGender(this.filterColor(product)).map((product, index) => {
+                    this.filterGender(this.filterColor(this.filterName(product))).map((product, index) => {
                       return (
                         <div className="col-md-4" key={index}>
                           <div className="card mb-4 product-wap rounded-0 shadow" style={{ position: 'relative' }}>
