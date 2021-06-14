@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import React from 'react';
 import jwt_decode from "jwt-decode";
 import './cart.style.scss';

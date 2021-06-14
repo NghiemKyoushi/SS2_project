@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -29,6 +30,7 @@ import ProductDetails from './view/productDetails/productDetails';
 import Content from './component/content/content';
 import Slide from './component/slide/slide';
 import Cart from './view/cart/cart';
+import UserInfo from './view/userInfo/userInfo';
 class Hanu_Shoes extends React.Component {
   constructor(props) {
     super(props);
@@ -123,20 +125,20 @@ class Hanu_Shoes extends React.Component {
         <Router>
           <Switch>
             <Route exact path="/">
-              {<HomePage cartCount={cartCount} isLogin={isLogin}>
+              <HomePage cartCount={cartCount} isLogin={isLogin}>
                 <Slide />
                 <Content />
-              </HomePage>}
+              </HomePage>
             </Route>
             <Route exact path='/product'>
-              {<HomePage cartCount={cartCount} isLogin={isLogin}>
+              <HomePage cartCount={cartCount} isLogin={isLogin}>
                 <ShopPage checkStillLogin={this.checkStillLogin} isLogin={isLogin} />
-              </HomePage>}
+              </HomePage>
             </Route>
             <Route exact path='/cart' >
-              {<HomePage cartCount={cartCount} isLogin={isLogin}>
+              <HomePage cartCount={cartCount} isLogin={isLogin}>
                 <Cart checkStillLogin={this.checkStillLogin} />
-              </HomePage>}
+              </HomePage>
             </Route>
             <UnAuthenRoute exact path='/product/:id'>
               <HomePage cartCount={cartCount} isLogin={isLogin} >
@@ -147,8 +149,13 @@ class Hanu_Shoes extends React.Component {
               <SignIn saveAuthentication={this.saveAuthentication} setStateLogin={this.setStateLogin} />
             </UnAuthenRoute>
             <UnAuthenRoute exact={true} isLogin={isLogin} path='/signup'>
-              <SignUp/>
+              <SignUp />
             </UnAuthenRoute>
+            <ProtectedRoute exact={true} isLogin={isLogin} path='/user/:id'>
+              <HomePage cartCount={cartCount} isLogin={isLogin}>
+                <UserInfo />
+              </HomePage>
+            </ProtectedRoute>
           </Switch>
         </Router>
 
@@ -157,31 +164,31 @@ class Hanu_Shoes extends React.Component {
         <Router>
           <Switch>
             <UnAuthenRoute isLogin={isAdminLogin} exact path='/admin/login'>
-              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
+              <Navbar setStateAdminLogin={this.setStateAdminLogin} />
               <Login setStateAdmin={this.setStateAdmin} setStateAdminLogin={this.setStateAdminLogin} />
             </UnAuthenRoute>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin'>
-              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
+              <Navbar setStateAdminLogin={this.setStateAdminLogin} />
               <Sidebar admin={admin} />
               <Dashboard />
             </ProtectedRouteAdmin>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/dashboard'>
-              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
+              <Navbar setStateAdminLogin={this.setStateAdminLogin} />
               <Sidebar admin={admin} />
               <Dashboard />
             </ProtectedRouteAdmin>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/user'>
-              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
+              <Navbar setStateAdminLogin={this.setStateAdminLogin} />
               <Sidebar admin={admin} />
               <User />
             </ProtectedRouteAdmin>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/product'>
-              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
+              <Navbar setStateAdminLogin={this.setStateAdminLogin} />
               <Sidebar admin={admin} />
               <Product />
             </ProtectedRouteAdmin>
             <ProtectedRouteAdmin exact isLogin={isAdminLogin} path='/admin/order'>
-              <Navbar setStateAdminLogin={this.setStateAdminLogin}/>
+              <Navbar setStateAdminLogin={this.setStateAdminLogin} />
               <Sidebar admin={admin} />
               <Order />
             </ProtectedRouteAdmin>

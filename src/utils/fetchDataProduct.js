@@ -36,3 +36,18 @@ export async function getAllComment(id) {
     const { data } = await axios.get(`http://localhost:3030/comment/${id}`)
     return data;
 }
+
+export async function getUser(id) {
+    const { data } = await axios.get(`http://localhost:3030/user/${id}`)
+    return data;
+}
+
+export async function editUserInfo(id, info) {
+    const { data } = await axios.put(`http://localhost:3030/user/${id}`, info)
+    return data;
+}
+
+export async function getUserOrders(id) {
+    const { data } = await axios.get(`http://localhost:3030/user/orders/${id}`)
+    return data;
+}

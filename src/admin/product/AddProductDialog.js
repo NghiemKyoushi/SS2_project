@@ -1,6 +1,6 @@
+ /* eslint-disable */
 import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import Container from '@material-ui/core/Container';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import './AddProductDialog.css'
-class AddHomestayDialog extends Component {
+class AddProductDiaglog extends Component {
 
     constructor(props) {
         super(props)
@@ -138,4 +138,4 @@ class AddHomestayDialog extends Component {
     }
 }
 
-export default AddHomestayDialog;
+export default AddProductDiaglog;

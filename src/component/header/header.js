@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import React from "react";
 import Badge from '@material-ui/core/Badge';
 import "bootstrap/dist/css/bootstrap.css";
@@ -6,6 +7,7 @@ import jwt_decode from "jwt-decode";
 import { getCookie, deleteCookie } from "../../utils/fetchData";
 import { findCart } from '../../utils/fetchDataProduct'
 import './header.css'
+
 class Header extends React.Component {
   // constructor(props) {
   //   super(props);
@@ -25,6 +27,13 @@ class Header extends React.Component {
 
   render() {
     const { isLogin, cartCount } = this.props;
+    let uname = "User"
+    let sub = "0"
+    if (isLogin) {
+      const loginCookie = getCookie('login');
+      uname = jwt_decode(loginCookie).uname;
+      sub = jwt_decode(loginCookie).sub;
+    }
     return (
       <>
         <nav id="header" className="navbar navbar-expand-lg navbar-light shadow  ">
@@ -71,8 +80,14 @@ class Header extends React.Component {
                   </li>
                 </ul>
               </div>
-              <div className="navbar align-self-center d-flex" style={{ width: '155px' }}>
+              <div className="navbar align-self-center d-flex justify-content-end" style={{ width: '240px' }}>
                 {isLogin ? (<div className="flex-center" style={{ marginBottom: '0px' }}>
+                  <div>
+                    <span style={{ fontSize: '18px' }}>Hello </span>
+                    <Link className="user-link" to={`user/${sub}`}>
+                      {`${uname}`}
+                    </Link>
+                  </div>
                   <Badge badgeContent={cartCount ? cartCount : 0} color="error" style={{ border: "none" }} >
                     <Link to="/cart">
                       <i className="fas fa-shopping-cart"></i>
@@ -86,10 +101,10 @@ class Header extends React.Component {
                   </button>
                 </div>
                 ) : (
-                  <>
+                  <div className="d-flex" >
                     <Link className="loginButton" to="/login">Login</Link>
                     <Link className="loginButton ml-4" to="/signup" >Register</Link>
-                  </>
+                  </div>
                 )}
               </div>
             </div>

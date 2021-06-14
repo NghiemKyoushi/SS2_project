@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import axios from 'axios';
 //create cookies to save user when they login
 

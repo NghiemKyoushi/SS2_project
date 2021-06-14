@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import React, { Component } from 'react'
 import './Product.css'
 import Table from '@material-ui/core/Table';

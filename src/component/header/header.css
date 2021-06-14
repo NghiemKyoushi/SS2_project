@@ -24,3 +24,8 @@
 .nav-link:hover {
   color: green !important;
 }
+
+.user-link {
+  color: rgb(0, 59, 10);
+  font-size: 18px;
+}

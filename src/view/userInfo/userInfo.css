@@ -1,0 +1,8 @@
+.userInfo main {
+  width: calc(100% - 250px);
+  min-height: 240px;
+}
+
+.chosen {
+  color: green;
+}
