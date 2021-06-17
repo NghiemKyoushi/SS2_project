@@ -26,6 +26,7 @@ class UserInfo extends Component {
     }
 
     async componentDidMount() {
+        this.props.checkStillLogin();
         const id = this.props.location.pathname.split("/").reverse()[0];
         Promise.all([this.getUser(id), this.getUserOrders(id)])
     }
@@ -42,7 +43,6 @@ class UserInfo extends Component {
     async getUserOrders(id) {
         const orders = await getUserOrders(id);
         if (orders) {
-            console.log(orders)
             this.setState({
                 orders: orders
             })

@@ -1,4 +1,4 @@
- /* eslint-disable */
+/* eslint-disable */
 import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -153,7 +153,7 @@ class Hanu_Shoes extends React.Component {
             </UnAuthenRoute>
             <ProtectedRoute exact={true} isLogin={isLogin} path='/user/:id'>
               <HomePage cartCount={cartCount} isLogin={isLogin}>
-                <UserInfo />
+                <UserInfo checkStillLogin={this.checkStillLogin} />
               </HomePage>
             </ProtectedRoute>
           </Switch>

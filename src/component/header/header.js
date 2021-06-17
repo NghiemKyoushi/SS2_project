@@ -1,4 +1,4 @@
- /* eslint-disable */
+/* eslint-disable */
 import React from "react";
 import Badge from '@material-ui/core/Badge';
 import "bootstrap/dist/css/bootstrap.css";
@@ -29,7 +29,7 @@ class Header extends React.Component {
     const { isLogin, cartCount } = this.props;
     let uname = "User"
     let sub = "0"
-    if (isLogin) {
+    if (getCookie('login') !== "" && getCookie('login') != null) {
       const loginCookie = getCookie('login');
       uname = jwt_decode(loginCookie).uname;
       sub = jwt_decode(loginCookie).sub;
@@ -84,7 +84,7 @@ class Header extends React.Component {
                 {isLogin ? (<div className="flex-center" style={{ marginBottom: '0px' }}>
                   <div>
                     <span style={{ fontSize: '18px' }}>Hello </span>
-                    <Link className="user-link" to={`user/${sub}`}>
+                    <Link className="user-link" to={`/user/${sub}`}>
                       {`${uname}`}
                     </Link>
                   </div>
